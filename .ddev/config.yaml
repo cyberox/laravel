@@ -1,0 +1,12 @@
+name: laravel
+type: laravel
+docroot: public
+hooks:
+  post-start:
+    - composer: install
+  post-composer:
+    - exec: |
+        if grep -Eq "^APP_KEY=$" .env; then
+          php artisan key:generate --ansi
+        fi
+    - exec: php artisan migrate --graceful --ansi
